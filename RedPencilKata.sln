@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedPencilKata.Domain", "RedPencilKata.Domain\RedPencilKata.Domain.csproj", "{067347F9-275E-40B5-9665-CBCD9F9E3F25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedPencilKata.Tests", "RedPencilKata.Tests\RedPencilKata.Tests.csproj", "{3E1BDE9F-913F-4549-ABE5-25400A4229CB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{067347F9-275E-40B5-9665-CBCD9F9E3F25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{067347F9-275E-40B5-9665-CBCD9F9E3F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{067347F9-275E-40B5-9665-CBCD9F9E3F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{067347F9-275E-40B5-9665-CBCD9F9E3F25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E1BDE9F-913F-4549-ABE5-25400A4229CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E1BDE9F-913F-4549-ABE5-25400A4229CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E1BDE9F-913F-4549-ABE5-25400A4229CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E1BDE9F-913F-4549-ABE5-25400A4229CB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
