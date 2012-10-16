@@ -30,10 +30,9 @@ namespace RedPencilKata.Domain
         {
             if (!PromotionEndDate.HasValue)
                 return true;
-            else
-            {
-                return DateTime.Now.Subtract(PromotionEndDate.Value).Days >= 30;
-            }
+            
+            return DateTime.Now.Subtract(PromotionEndDate.Value).Days >= 30;
+            
         }
 
     }

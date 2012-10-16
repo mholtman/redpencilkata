@@ -21,13 +21,17 @@ namespace RedPencilKata.Domain
 
         public RedPencilItem ChangePrice(RedPencilItem item, decimal newPrice)
         {
-            if (_rules.Process(item, newPrice))
+            if (_rules.Process(item, newPrice) && item.IsPriceStable())
             {
                 return startPromotion(item, newPrice);
 
             }
+            else if (_rules.Process(item, newPrice))
+            {
+                return continuePromotion(item, newPrice);
+            }
 
-            return item;
+            return endPromotion(item);
         }
 
         private RedPencilItem startPromotion(RedPencilItem item, decimal newPrice)
@@ -35,6 +39,21 @@ namespace RedPencilKata.Domain
             item.MarkedDownPrice = newPrice;
             item.PromotionStartDate = DateTime.Now;
             item.PromotionEndDate = item.PromotionStartDate.Value.AddDays(30);
+
+            return item;
+        }
+
+        private RedPencilItem continuePromotion(RedPencilItem item, decimal newPrice)
+        {
+            item.MarkedDownPrice = newPrice;
+
+            return item;
+        }
+
+        private RedPencilItem endPromotion(RedPencilItem item)
+        {
+            item.PromotionEndDate = DateTime.Now;
+            item.MarkedDownPrice = null;
 
             return item;
         }

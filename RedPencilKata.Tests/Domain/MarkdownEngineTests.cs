@@ -77,5 +77,30 @@ namespace RedPencilKata.Tests.Domain
             Assert.IsFalse(item2.MarkedDownPrice.HasValue);
         }
 
+        [Test]
+        public void valid_price_reduction_during_promotion_does_not_extend_promotion()
+        {
+            RedPencilItem item = new RedPencilItem(100.00m);
+            item = _engine.ChangePrice(item, 95.00m);
+            DateTime origEndDate = item.PromotionEndDate.Value;
+
+            item = _engine.ChangePrice(item, 90.00m);
+            Assert.AreEqual(origEndDate, item.PromotionEndDate.Value);
+            
+        }
+
+        [Test]
+        public void invalid_price_reduction_during_promotion_ends_promotion()
+        {
+            RedPencilItem item = new RedPencilItem(100.00m);
+            item = _engine.ChangePrice(item, 91.00m);
+
+            item = _engine.ChangePrice(item, 69.99m);
+
+            Assert.IsFalse(item.MarkedDownPrice.HasValue);
+            Assert.IsTrue(item.PromotionEndDate.HasValue);
+
+        }
+
     }
 }
