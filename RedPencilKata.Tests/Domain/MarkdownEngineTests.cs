@@ -102,5 +102,18 @@ namespace RedPencilKata.Tests.Domain
 
         }
 
+        [Test]
+        public void price_increase_during_promotion_ends_promotion()
+        {
+            RedPencilItem item = new RedPencilItem(100.00m);
+            item = _engine.ChangePrice(item, 89.00m);
+
+            Assert.IsTrue(item.MarkedDownPrice.HasValue);
+
+            item = _engine.ChangePrice(item, 91.00m);
+
+            Assert.IsFalse(item.MarkedDownPrice.HasValue);
+        }
+
     }
 }

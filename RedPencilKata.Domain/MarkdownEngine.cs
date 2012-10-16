@@ -7,31 +7,45 @@ namespace RedPencilKata.Domain
 {
     public class MarkdownEngine
     {
-        private readonly IMarkdownRules _rules;
+        private readonly IMarkdownRule[] _startRules;
+        private readonly IMarkdownRule[] _endRules;
+        private readonly IMarkdownRule[] _continueRules;
         
-        public MarkdownEngine(IMarkdownRules rules)
+        public MarkdownEngine(IMarkdownRule[] startRules, IMarkdownRule[] continueRules, IMarkdownRule[] endRules)
         {
-            _rules = rules;
+            _startRules = startRules;
+            _continueRules = continueRules;
+            _endRules = endRules;
         }
 
         public MarkdownEngine()
         {
-            _rules = new DefaultMarkdownRules();
+            _startRules = new IMarkdownRule[] {new LowerBoundRule(), new UpperBoundRule(), new StablePriceRule()};
+            _continueRules = new IMarkdownRule[] {new LowerBoundRule(), new UpperBoundRule()};
+            _endRules = new IMarkdownRule[] {new NoIncreaseRule() };
         }
 
         public RedPencilItem ChangePrice(RedPencilItem item, decimal newPrice)
         {
-            if (_rules.Process(item, newPrice) && item.IsPriceStable())
+
+            if (_endRules.All(x => x.Process(item, newPrice)))
+            {
+                return endPromotion(item);
+            }
+            
+            if (_startRules.All(x => x.Process(item, newPrice)))
             {
                 return startPromotion(item, newPrice);
-
             }
-            else if (_rules.Process(item, newPrice))
+            
+            if (_continueRules.All(x => x.Process(item, newPrice)))
             {
                 return continuePromotion(item, newPrice);
             }
 
-            return endPromotion(item);
+            
+
+            return item;
         }
 
         private RedPencilItem startPromotion(RedPencilItem item, decimal newPrice)
