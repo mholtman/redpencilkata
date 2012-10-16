@@ -53,5 +53,22 @@ namespace RedPencilKata.Tests.Domain
             Assert.AreEqual(30, dateDiff.Days);
         }
 
+        [Test]
+        public void price_change_must_be_five_percent_or_greater_of_original()
+        {
+            RedPencilItem item  = new RedPencilItem(100.00m);
+            item.ChangePrice(96.00m);
+            Assert.IsFalse(item.MarkedDownPrice.HasValue);
+            
+            RedPencilItem item2 = new RedPencilItem(100.00m);
+            item2.ChangePrice(95.01m);
+            Assert.IsFalse(item2.MarkedDownPrice.HasValue);
+
+            RedPencilItem item3 = new RedPencilItem(100.00m);
+            item3.ChangePrice(94.99m);
+            Assert.IsTrue(item3.MarkedDownPrice.HasValue);
+            
+        }
+
     }
 }
