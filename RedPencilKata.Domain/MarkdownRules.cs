@@ -42,16 +42,16 @@ namespace RedPencilKata.Domain
         }
     }
 
-    public class NoIncreaseRule : IMarkdownRule
+    public class PriceIncreaseRule : IMarkdownRule
     {
         public bool Process(RedPencilItem item, decimal newPrice)
         {
             if (item.MarkedDownPrice.HasValue)
             {
-                return item.MarkedDownPrice.Value <= newPrice;
+                return newPrice > item.MarkedDownPrice.Value;
             }
 
-            return item.OriginalPrice <= newPrice;
+            return newPrice > item.OriginalPrice;
         }
 
 

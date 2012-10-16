@@ -10,40 +10,48 @@ namespace RedPencilKata.Domain
         private readonly IMarkdownRule[] _startRules;
         private readonly IMarkdownRule[] _endRules;
         private readonly IMarkdownRule[] _continueRules;
+        private readonly IMarkdownRule[] _endRules2;
         
-        public MarkdownEngine(IMarkdownRule[] startRules, IMarkdownRule[] continueRules, IMarkdownRule[] endRules)
+        public MarkdownEngine(IMarkdownRule[] startRules, IMarkdownRule[] continueRules, IMarkdownRule[] endRules, IMarkdownRule[] endRules2)
         {
             _startRules = startRules;
             _continueRules = continueRules;
             _endRules = endRules;
+            _endRules2 = endRules2;
         }
 
         public MarkdownEngine()
         {
             _startRules = new IMarkdownRule[] {new LowerBoundRule(), new UpperBoundRule(), new StablePriceRule()};
             _continueRules = new IMarkdownRule[] {new LowerBoundRule(), new UpperBoundRule()};
-            _endRules = new IMarkdownRule[] {new NoIncreaseRule() };
+            _endRules = new IMarkdownRule[] {new PriceIncreaseRule()};
+            _endRules2 = new IMarkdownRule[] {new UpperBoundRule(), new LowerBoundRule()};
         }
 
         public RedPencilItem ChangePrice(RedPencilItem item, decimal newPrice)
         {
 
-            if (_endRules.All(x => x.Process(item, newPrice)))
-            {
-                return endPromotion(item);
-            }
+            
             
             if (_startRules.All(x => x.Process(item, newPrice)))
             {
                 return startPromotion(item, newPrice);
             }
             
+            if (_endRules.All(x => x.Process(item, newPrice)))
+            {
+                return endPromotion(item);
+            }
+
+            if (_endRules2.Any(x => !x.Process(item, newPrice)))
+            {
+                return endPromotion(item);
+            }
+
             if (_continueRules.All(x => x.Process(item, newPrice)))
             {
                 return continuePromotion(item, newPrice);
             }
-
-            
 
             return item;
         }
