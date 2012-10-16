@@ -13,5 +13,16 @@ namespace RedPencilKata.Domain
         }
 
         public decimal OriginalPrice { get; private set; }
+        public decimal? MarkedDownPrice { get; private set; }
+        public DateTime? PromotionStartDate { get; private set; }
+        public DateTime? PromotionEndDate { get; private set; }
+
+
+        public void ChangePrice(decimal newPrice)
+        {
+            MarkedDownPrice = newPrice;
+            PromotionStartDate = DateTime.Now;
+            PromotionEndDate = DateTime.Now.AddDays(30);
+        }
     }
 }
