@@ -19,19 +19,7 @@ namespace RedPencilKata.Tests.Domain
             _engine = new MarkdownEngine();
         }
         
-        [Test]
-        public void can_create_entity_with_price()
-        {
-            RedPencilItem item  = new RedPencilItem(100.00m);
-            Assert.AreEqual(100.00m, item.OriginalPrice);
-        }
-
-        [Test]
-        public void newly_created_item_has_nulled_markdown_price()
-        {
-            RedPencilItem item = new RedPencilItem(100.00m);
-            Assert.IsFalse(item.MarkedDownPrice.HasValue);
-        }
+        
 
         [Test]
         public void can_change_price()

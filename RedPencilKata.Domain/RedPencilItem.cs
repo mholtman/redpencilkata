@@ -26,6 +26,15 @@ namespace RedPencilKata.Domain
         public DateTime? PromotionStartDate { get; set; }
         public DateTime? PromotionEndDate { get;  set; }
 
+        public bool IsPriceStable()
+        {
+            if (!PromotionEndDate.HasValue)
+                return true;
+            else
+            {
+                return DateTime.Now.Subtract(PromotionEndDate.Value).Days >= 30;
+            }
+        }
 
     }
 }
