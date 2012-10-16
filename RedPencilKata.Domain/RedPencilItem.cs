@@ -21,22 +21,11 @@ namespace RedPencilKata.Domain
             _rules = new DefaultMarkdownRules();
         }
 
-        public decimal OriginalPrice { get; private set; }
-        public decimal? MarkedDownPrice { get; private set; }
-        public DateTime? PromotionStartDate { get; private set; }
-        public DateTime? PromotionEndDate { get; private set; }
+        public decimal OriginalPrice { get;  set; }
+        public decimal? MarkedDownPrice { get;  set; }
+        public DateTime? PromotionStartDate { get; set; }
+        public DateTime? PromotionEndDate { get;  set; }
 
 
-        public void ChangePrice(decimal newPrice)
-        {
-            if(_rules.Process(this, newPrice))
-            {
-                MarkedDownPrice = newPrice;
-                PromotionStartDate = DateTime.Now;
-                PromotionEndDate = DateTime.Now.AddDays(30);
-            }
-            
-            
-        }
     }
 }

@@ -15,12 +15,22 @@ namespace RedPencilKata.Domain
     {
         public bool Process(RedPencilItem item, decimal newPrice)
         {
-            decimal priceDiff = item.OriginalPrice - newPrice;
+            return honorsLowerBound(item.OriginalPrice, newPrice) && honorsUpperBound(item.OriginalPrice, newPrice);
 
-            return (priceDiff/item.OriginalPrice) >= 0.05m;
-            
+        }
 
-            return true; 
+        private bool honorsLowerBound(decimal originalPrice, decimal newPrice)
+        {
+            decimal priceDiff = originalPrice - newPrice;
+
+            return (priceDiff / originalPrice) >= 0.05m;
+        }
+
+        private bool honorsUpperBound(decimal originalPrice, decimal newPrice)
+        {
+            decimal priceDiff = originalPrice - newPrice;
+
+            return (priceDiff/originalPrice) <= 0.30m;
         }
     }
 }

@@ -9,9 +9,16 @@ using RedPencilKata.Domain;
 namespace RedPencilKata.Tests.Domain
 {
     [TestFixture]
-    public class RedPencilEntityTests
+    public class MarkdownEngineTests
     {
-
+        private MarkdownEngine _engine; 
+        
+        [SetUp]
+        public void setup()
+        {
+            _engine = new MarkdownEngine();
+        }
+        
         [Test]
         public void can_create_entity_with_price()
         {
@@ -30,7 +37,7 @@ namespace RedPencilKata.Tests.Domain
         public void can_change_price()
         {
             RedPencilItem item = new RedPencilItem(100.00m);
-            item.ChangePrice(90.00m);
+            item = _engine.ChangePrice(item, 90.00m);
             Assert.AreEqual(90.00m, item.MarkedDownPrice.Value);
 
         }
@@ -39,7 +46,7 @@ namespace RedPencilKata.Tests.Domain
         public void price_change_should_trigger_promotion()
         {
             RedPencilItem item = new RedPencilItem(100.00m);
-            item.ChangePrice(90.00m);
+            item = _engine.ChangePrice(item, 90.00m);
             Assert.IsTrue(item.PromotionStartDate.HasValue);
             Assert.IsTrue(item.PromotionEndDate.HasValue);
         }
@@ -48,7 +55,7 @@ namespace RedPencilKata.Tests.Domain
         public void promotion_start_and_end_date_should_be_30_days_apart()
         {
             RedPencilItem item = new RedPencilItem(100.00m);
-            item.ChangePrice(90.00m);
+            item = _engine.ChangePrice(item, 90.00m);
             TimeSpan dateDiff = item.PromotionEndDate.Value.Subtract(item.PromotionStartDate.Value);
             Assert.AreEqual(30, dateDiff.Days);
         }
@@ -57,17 +64,29 @@ namespace RedPencilKata.Tests.Domain
         public void price_change_must_be_five_percent_or_greater_of_original()
         {
             RedPencilItem item  = new RedPencilItem(100.00m);
-            item.ChangePrice(96.00m);
+            item = _engine.ChangePrice(item, 96.00m);
             Assert.IsFalse(item.MarkedDownPrice.HasValue);
             
             RedPencilItem item2 = new RedPencilItem(100.00m);
-            item2.ChangePrice(95.01m);
+            item2 = _engine.ChangePrice(item2, 95.01m);
             Assert.IsFalse(item2.MarkedDownPrice.HasValue);
 
             RedPencilItem item3 = new RedPencilItem(100.00m);
-            item3.ChangePrice(94.99m);
+            item3 = _engine.ChangePrice(item3, 94.99m);
             Assert.IsTrue(item3.MarkedDownPrice.HasValue);
             
+        }
+
+        [Test]
+        public void price_change_must_be_equal_to_or_less_than_thirty_percent_of_original()
+        {
+            RedPencilItem item = new RedPencilItem(100.00m);
+            item = _engine.ChangePrice(item, 70.00m);
+            Assert.IsTrue(item.MarkedDownPrice.HasValue);
+
+            RedPencilItem item2 = new RedPencilItem(100.00m);
+            item2 = _engine.ChangePrice(item2, 69.99m);
+            Assert.IsFalse(item2.MarkedDownPrice.HasValue);
         }
 
     }
