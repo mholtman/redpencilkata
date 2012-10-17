@@ -44,6 +44,31 @@ namespace RedPencilKata.Tests.Domain
 
             Assert.IsFalse(new LowerBoundRule().Process(item, 96.66m));
         }
+
+        [Test]
+        public void price_increase_rule_should_return_true_for_increase()
+        {
+            RedPencilItem item = new RedPencilItem(100.00m);
+
+            Assert.IsTrue(new PriceIncreaseRule().Process(item, 101.00m));
+        }
+
+        [Test]
+        public void stable_price_rule_is_true_for_null_end_date()
+        {
+            RedPencilItem item = new RedPencilItem(100.00m);
+
+            Assert.IsTrue(new StablePriceRule().Process(item, 100.00m));
+        }
+
+        [Test]
+        public void stable_price_rule_false_for_end_date_younger_than_30_days()
+        {
+            RedPencilItem item = new RedPencilItem(100.00m);
+            item.PromotionEndDate = DateTime.Now.AddDays(-15);
+
+            Assert.IsFalse(new StablePriceRule().Process(item, 100.0m));
+        }
         
     }
 }
